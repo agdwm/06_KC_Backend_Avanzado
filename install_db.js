@@ -29,7 +29,8 @@ db.once('open', function () {
 
 function runInstallScript () {
   async.series([
-    initAnuncios
+    initAnuncios,
+    initUsuarios
   ], (err) => {
     if (err) {
       console.error(__('generic', { err }))
@@ -56,6 +57,24 @@ function initAnuncios (cb) {
 
       console.log(`Se han cargado ${numLoaded} anuncios.`)
       return cb(null, numLoaded)
+    })
+  })
+}
+
+function initUsuarios (cb) {
+  const Usuario = require('./models/Usuario')
+
+  Usuario.remove({}, () => {
+    console.log('Usuarios borrados.')
+
+    Usuario.insertMany([
+      {name: 'user', email: 'user@example.com', password: Usuario.hashPassword('1234')},
+      {name: 'user2', email: 'user2@example.com', password: Usuario.hashPassword('1234')}
+    ], (err, loaded) => {
+      if (err) return cb(err)
+
+      console.log(`Se han cargado ${loaded.length} usuarios.`)
+      return cb(null, loaded)
     })
   })
 }
