@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "DEBUG=nodepop:* nodemon ./bin/www",
-    "hints": "jshint . && ./node_modules/.bin/jscs . || true",
+    "hints": "eslint . || true",
     "installDB": "node install_db.js"
   },
   "dependencies": {
@@ -23,7 +23,11 @@
     "validator": "^4.0.6"
   },
   "devDependencies": {
-    "jscs": "^2.1.1",
-    "jshint": "^2.8.0"
+    "eslint": "^4.10.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1"
   }
 }

@@ -33,7 +33,7 @@ To start in development mode:
 
     npm test (pending to create, the client specified not to do now)
 
-## JSHint & JSCS
+## ESLint
 
     npm run hints
 
