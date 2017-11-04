@@ -1,7 +1,7 @@
 'use strict'
 
 const mongoose = require('mongoose')
-const fs = require('fs')
+const fs = require('fs-extra')
 const flow = require('../lib/flowControl')
 const configAnuncios = require('../local_config').anuncios
 const path = require('path')
@@ -69,6 +69,17 @@ anuncioSchema.statics.list = async function (filters, startRow, numRows, sortFie
 
   if (cb) return cb(null, result) // si me dan callback devuelvo los resultados por ahí
   return result // si no, los devuelvo por la promesa del async (async está en la primera linea de esta función)
+}
+
+anuncioSchema.methods.setFoto = async function (imageObject) {
+  if (!imageObject) return
+  // copiar el fichero desde la carpeta uploads a public/images/anuncios
+  // usando en nombre original del producto
+  // IMPORTANTE: valorar si quereis poner el _id del usuario (this._id) para
+  // diferenciar imagenes de distintos usuarios con el mismo nombre
+  const dstPath = path.join(__dirname, '../public/images/anuncios', imageObject.originalname)
+  await fs.copy(imageObject.path, dstPath)
+  this.foto = imageObject.originalname
 }
 
 var Anuncio = mongoose.model('Anuncio', anuncioSchema)
