@@ -39,10 +39,9 @@ router.get('/', (req, res, next) => {
     filters.nombre = new RegExp('^' + req.query.nombre, 'i')
   }
 
-  Anuncio.list(filters, start, limit, sort, includeTotal, function (err, anuncios) {
-    if (err) return next(err)
+  Anuncio.list(filters, start, limit, sort, includeTotal).then(anuncios => {
     res.json({ ok: true, result: anuncios })
-  })
+  }).catch(err => next(err))
 })
 
 // Return the list of available tags

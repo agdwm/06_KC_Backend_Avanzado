@@ -19,7 +19,9 @@ const app = express()
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
-app.use(logger('dev'))
+if (process.env.LOG_FORMAT !== 'nolog') {
+  app.use(logger(process.env.LOG_FORMAT || 'dev'))
+}
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())

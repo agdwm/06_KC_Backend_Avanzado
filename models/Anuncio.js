@@ -72,3 +72,5 @@ anuncioSchema.statics.list = async function (filters, startRow, numRows, sortFie
 }
 
 var Anuncio = mongoose.model('Anuncio', anuncioSchema)
+
+module.exports = Anuncio
