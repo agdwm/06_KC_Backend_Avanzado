@@ -5,6 +5,11 @@ const fs = require('fs-extra')
 const flow = require('../lib/flowControl')
 const configAnuncios = require('../local_config').anuncios
 const path = require('path')
+const cote = require('cote')
+
+const thumbnailRequester = new cote.Requester({
+  name: 'thumbnail creator client'
+}, { log: false, statusLogsEnabled: false })
 
 const anuncioSchema = mongoose.Schema({
   nombre: { type: String, index: true },
@@ -80,6 +85,10 @@ anuncioSchema.methods.setFoto = async function (imageObject) {
   const dstPath = path.join(__dirname, '../public/images/anuncios', imageObject.originalname)
   await fs.copy(imageObject.path, dstPath)
   this.foto = imageObject.originalname
+  thumbnailRequester.send({
+    type: 'createThumbnail',
+    image: dstPath
+  })
 }
 
 var Anuncio = mongoose.model('Anuncio', anuncioSchema)
